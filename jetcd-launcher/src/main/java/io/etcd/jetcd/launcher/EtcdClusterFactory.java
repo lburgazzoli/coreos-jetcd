@@ -45,7 +45,7 @@ public class EtcdClusterFactory {
         nodes,
         ssl,
         false,
-        EtcdContainer.ETCD_DOCKER_IMAGE_NAME,
+        System.getProperty("etcd.image", EtcdContainer.ETCD_DOCKER_IMAGE_NAME),
         Collections.emptyList()
     );
   }
@@ -62,7 +62,7 @@ public class EtcdClusterFactory {
         nodes,
         ssl,
         restartable,
-        EtcdContainer.ETCD_DOCKER_IMAGE_NAME,
+        System.getProperty("etcd.image", EtcdContainer.ETCD_DOCKER_IMAGE_NAME),
         Arrays.asList(additionalArgs)
     );
   }

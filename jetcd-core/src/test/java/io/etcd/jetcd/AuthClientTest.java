@@ -20,15 +20,14 @@ import static io.etcd.jetcd.TestUtil.bytesOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import io.etcd.jetcd.auth.AuthRoleGetResponse;
 import io.etcd.jetcd.auth.AuthRoleListResponse;
 import io.etcd.jetcd.auth.Permission;
-import io.etcd.jetcd.auth.Permission.Type;
 import io.etcd.jetcd.launcher.junit5.EtcdClusterExtension;
 import java.net.URI;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 public class AuthClientTest {
@@ -36,27 +35,27 @@ public class AuthClientTest {
   @RegisterExtension
   public static final EtcdClusterExtension cluster = new EtcdClusterExtension("auth-etcd", 1, false);
 
-  private final ByteSequence rootRoleKey = bytesOf("root");
+  private final ByteSequence rootRoleKey = bytesOf("/root");
   private final ByteSequence rootRoleValue = bytesOf("b");
-  private final ByteSequence rootRoleKeyRangeBegin = bytesOf("root");
-  private final ByteSequence rootRoleKeyRangeEnd = bytesOf("root1");
+  private final ByteSequence rootRoleKeyRangeBegin = bytesOf("/root");
+  private final ByteSequence rootRoleKeyRangeEnd = bytesOf("/root0");
 
-  private final ByteSequence userRoleKey = bytesOf("foo");
+  private final ByteSequence userRoleKey = bytesOf("/foo");
   private final ByteSequence userRoleValue = bytesOf("bar");
-  private final ByteSequence userRoleKeyRangeBegin = bytesOf("foo");
-  private final ByteSequence userRoleKeyRangeEnd = bytesOf("foo1");
+  private final ByteSequence userRoleKeyRangeBegin = bytesOf("/foo");
+  private final ByteSequence userRoleKeyRangeEnd = bytesOf("/foo0");
 
   private final String rootString = "root";
   private final ByteSequence root = bytesOf(rootString);
-  private final ByteSequence rootPass = bytesOf("123");
+  private final ByteSequence rootPass = bytesOf("root");
   private final String rootRoleString = "root";
   private final ByteSequence rootRole = bytesOf(rootRoleString);
 
-  private final String userString = "user";
+  private final String userString = "client";
   private final ByteSequence user = bytesOf(userString);
-  private final ByteSequence userPass = bytesOf("userPass");
+  private final ByteSequence userPass = bytesOf("client");
   private final ByteSequence userNewPass = bytesOf("newUserPass");
-  private final String userRoleString = "userRole";
+  private final String userRoleString = "client";
   private final ByteSequence userRole = bytesOf(userRoleString);
 
   private static Auth authDisabledAuthClient;
@@ -76,6 +75,7 @@ public class AuthClientTest {
     authDisabledAuthClient = client.getAuthClient();
   }
 
+  @DisabledIfSystemProperty(named = "etcd.image", matches = "gcr.io/etcd-development/etcd:v3.4\\..*")
   @Test
   public void testAuth() throws Exception {
     authDisabledAuthClient.roleAdd(rootRole).get();
@@ -88,7 +88,7 @@ public class AuthClientTest {
         .roleGrantPermission(rootRole, rootRoleKeyRangeBegin, rootRoleKeyRangeEnd, Permission.Type.READWRITE)
         .get();
     authDisabledAuthClient
-        .roleGrantPermission(userRole, userRoleKeyRangeBegin, userRoleKeyRangeEnd, Type.READWRITE)
+        .roleGrantPermission(userRole, userRoleKeyRangeBegin, userRoleKeyRangeEnd, Permission.Type.READWRITE)
         .get();
 
     authDisabledAuthClient.userAdd(root, rootPass).get();
@@ -103,21 +103,13 @@ public class AuthClientTest {
     authDisabledAuthClient.userGrantRole(user, rootRole).get();
     authDisabledAuthClient.userGrantRole(user, userRole).get();
 
-    assertThat(authDisabledAuthClient.userGet(root).get().getRoles()).containsOnly(
-        rootRoleString);
-    assertThat(authDisabledAuthClient.userGet(user).get().getRoles()).containsOnly(
-        rootRoleString, userRoleString);
+    assertThat(authDisabledAuthClient.userGet(root).get().getRoles()).containsOnly(rootRoleString);
+    assertThat(authDisabledAuthClient.userGet(user).get().getRoles()).containsOnly(rootRoleString, userRoleString);
 
     authDisabledAuthClient.authEnable().get();
 
-    final Client userClient = Client.builder()
-        .endpoints(endpoints)
-        .user(user)
-        .password(userNewPass).build();
-    final Client rootClient = Client.builder()
-        .endpoints(endpoints)
-        .user(root)
-        .password(rootPass).build();
+    Client userClient = Client.builder().endpoints(endpoints).user(user).password(userNewPass).build();
+    Client rootClient = Client.builder().endpoints(endpoints).user(root).password(rootPass).build();
 
     userClient.getKVClient().put(rootRoleKey, rootRoleValue).get();
     userClient.getKVClient().put(userRoleKey, userRoleValue).get();
@@ -133,15 +125,8 @@ public class AuthClientTest {
     assertThatThrownBy(() -> authDisabledKVClient.get(userRoleKey).get())
         .hasMessageContaining("etcdserver: user name is empty");
 
-    AuthRoleGetResponse roleGetResponse = userClient.getAuthClient()
-        .roleGet(rootRole)
-        .get();
-    assertThat(roleGetResponse.getPermissions().size()).isNotEqualTo(0);
-
-    roleGetResponse = userClient.getAuthClient()
-        .roleGet(userRole)
-        .get();
-    assertThat(roleGetResponse.getPermissions().size()).isNotEqualTo(0);
+    assertThat(userClient.getAuthClient().roleGet(rootRole).get().getPermissions()).isNotEmpty();
+    assertThat(userClient.getAuthClient().roleGet(userRole).get().getPermissions()).isNotEmpty();
 
     rootClient.getAuthClient().userRevokeRole(user, rootRole).get();
 

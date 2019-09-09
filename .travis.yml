@@ -21,13 +21,14 @@ before_install:
 script:
   - sdk use java 8.0.222.hs-adpt
   - java -version
-  - ./mvnw clean install $MAVEN_COMMON_OPTS
+  - ./mvnw clean install -Detcd.image=gcr.io/etcd-development/etcd:v3.3 $MAVEN_COMMON_OPTS || travis_terminate 1
+  - ./mvnw clean install -Detcd.image=gcr.io/etcd-development/etcd:v3.4.0 $MAVEN_COMMON_OPTS || travis_terminate 1
 
 deploy:
   provider: script
   script: ./mvnw clean deploy $MAVEN_COMMON_OPTS -DskipTests --settings etc/mvn-deploy-settings.xml
-  skip_cleanup: true 
+  skip_cleanup: true
   on:
     branch: master
     condition: $TRAVIS_PULL_REQUEST = "false"
-    
+

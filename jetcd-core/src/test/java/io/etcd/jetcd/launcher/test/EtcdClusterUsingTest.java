@@ -27,7 +27,6 @@ import io.etcd.jetcd.kv.GetResponse;
 import io.etcd.jetcd.launcher.EtcdCluster;
 import io.etcd.jetcd.launcher.EtcdClusterFactory;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import org.junit.Test;
 
 /**
@@ -50,10 +49,10 @@ public class EtcdClusterUsingTest {
           ByteSequence value = bytesOf("test_value");
           kvClient.put(key, value).get();
 
-          CompletableFuture<GetResponse> getFuture = kvClient.get(key);
-          GetResponse response = getFuture.get();
+          GetResponse response = kvClient.get(key).get();
           List<KeyValue> values = response.getKvs();
-          assertThat(values.size()).isEqualTo(1);
+          assertThat(values).hasSize(1);
+
           KeyValue value1 = values.get(0);
           assertThat(value1.getValue()).isEqualTo(value);
           assertThat(value1.getKey()).isEqualTo(key);

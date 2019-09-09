@@ -89,7 +89,7 @@ public class EtcdContainer implements AutoCloseable {
         endpoint,
         endpoints,
         restartable,
-        ETCD_DOCKER_IMAGE_NAME,
+        System.getProperty("etcd.image", ETCD_DOCKER_IMAGE_NAME),
         emptyList()
     );
   }
@@ -112,7 +112,7 @@ public class EtcdContainer implements AutoCloseable {
         endpoint,
         endpoints,
         restartable,
-        ETCD_DOCKER_IMAGE_NAME,
+        System.getProperty("etcd.image", ETCD_DOCKER_IMAGE_NAME),
         asList(additionalArgs)
     );
   }
@@ -124,7 +124,8 @@ public class EtcdContainer implements AutoCloseable {
       String clusterName,
       String endpoint,
       List<String> endpoints,
-      boolean restartable, String image,
+      boolean restartable,
+      String image,
       List<String> additionalArgs) {
 
     this.endpoint = endpoint;
@@ -193,13 +194,16 @@ public class EtcdContainer implements AutoCloseable {
     command.addAll(additionalArgs);
 
     if (!command.isEmpty()) {
+      LOGGER.debug("Running {} with command: {}", name, String.join(" ", command));
       this.container.withCommand(command.toArray(new String[command.size()]));
     }
   }
 
   public void start() {
     LOGGER.debug("starting etcd container {} with command: {}",
-            endpoint, String.join(" ", container.getCommandParts()));
+        endpoint,
+        String.join(" ", container.getCommandParts())
+    );
 
     try {
       this.container.start();
@@ -239,15 +243,17 @@ public class EtcdContainer implements AutoCloseable {
   }
 
   public URI clientEndpoint() {
-    final String host = container.getContainerIpAddress();
-    final int port = container.getMappedPort(ETCD_CLIENT_PORT);
-    return newURI(host, port);
+    return newURI(
+      container.getContainerIpAddress(),
+      container.getMappedPort(ETCD_CLIENT_PORT)
+    );
   }
 
   public URI peerEndpoint() {
-    final String host = container.getContainerIpAddress();
-    final int port = container.getMappedPort(ETCD_PEER_PORT);
-    return newURI(host, port);
+    return newURI(
+      container.getContainerIpAddress(),
+      container.getMappedPort(ETCD_PEER_PORT)
+    );
   }
 
   // ****************
@@ -315,10 +321,9 @@ public class EtcdContainer implements AutoCloseable {
 
   private static Path createDataDirectory(String name) {
     try {
-      final Path path = Files.createTempDirectory("jetcd_test_" + name + "_");
       // https://github.com/etcd-io/jetcd/issues/489
       // Resolve symlink (/var -> /private/var) to don't fail for Mac OS because of docker thing with /var/folders
-      return path.toRealPath();
+      return Files.createTempDirectory("jetcd_test_" + name + "_").toRealPath();
     } catch (IOException e) {
       throw new ContainerLaunchException("Error creating data directory", e);
     }

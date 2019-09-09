@@ -38,7 +38,6 @@ import java.util.concurrent.CompletableFuture;
  * Interface of auth talking to etcd.
  */
 public interface Auth extends CloseableClient {
-
   /**
    * enables auth of an etcd cluster.
    */
@@ -52,23 +51,28 @@ public interface Auth extends CloseableClient {
   /**
    * adds a new user to an etcd cluster.
    */
-  CompletableFuture<AuthUserAddResponse> userAdd(ByteSequence user, ByteSequence password);
+  CompletableFuture<AuthUserAddResponse> userAdd(
+      ByteSequence user,
+      ByteSequence password);
 
   /**
    * deletes a user from an etcd cluster.
    */
-  CompletableFuture<AuthUserDeleteResponse> userDelete(ByteSequence user);
+  CompletableFuture<AuthUserDeleteResponse> userDelete(
+      ByteSequence user);
 
   /**
    * changes a password of a user.
    */
-  CompletableFuture<AuthUserChangePasswordResponse> userChangePassword(ByteSequence user,
+  CompletableFuture<AuthUserChangePasswordResponse> userChangePassword(
+      ByteSequence user,
       ByteSequence password);
 
   /**
    * gets a detailed information of a user.
    */
-  CompletableFuture<AuthUserGetResponse> userGet(ByteSequence user);
+  CompletableFuture<AuthUserGetResponse> userGet(
+      ByteSequence user);
 
   /**
    * gets a list of all users.
@@ -78,12 +82,15 @@ public interface Auth extends CloseableClient {
   /**
    * grants a role to a user.
    */
-  CompletableFuture<AuthUserGrantRoleResponse> userGrantRole(ByteSequence user, ByteSequence role);
+  CompletableFuture<AuthUserGrantRoleResponse> userGrantRole(
+      ByteSequence user,
+      ByteSequence role);
 
   /**
    * revokes a role of a user.
    */
-  CompletableFuture<AuthUserRevokeRoleResponse> userRevokeRole(ByteSequence user,
+  CompletableFuture<AuthUserRevokeRoleResponse> userRevokeRole(
+      ByteSequence user,
       ByteSequence role);
 
   /**
@@ -94,14 +101,17 @@ public interface Auth extends CloseableClient {
   /**
    * grants a permission to a role.
    */
-  CompletableFuture<AuthRoleGrantPermissionResponse> roleGrantPermission(ByteSequence role,
+  CompletableFuture<AuthRoleGrantPermissionResponse> roleGrantPermission(
+      ByteSequence role,
       ByteSequence key,
-      ByteSequence rangeEnd, Permission.Type permType);
+      ByteSequence rangeEnd,
+      Permission.Type permType);
 
   /**
    * gets a detailed information of a role.
    */
-  CompletableFuture<AuthRoleGetResponse> roleGet(ByteSequence role);
+  CompletableFuture<AuthRoleGetResponse> roleGet(
+      ByteSequence role);
 
   /**
    * gets a list of all roles.
@@ -111,13 +121,14 @@ public interface Auth extends CloseableClient {
   /**
    * revokes a permission from a role.
    */
-  CompletableFuture<AuthRoleRevokePermissionResponse> roleRevokePermission(ByteSequence role,
+  CompletableFuture<AuthRoleRevokePermissionResponse> roleRevokePermission(
+      ByteSequence role,
       ByteSequence key,
       ByteSequence rangeEnd);
 
   /**
    * RoleDelete deletes a role.
    */
-  CompletableFuture<AuthRoleDeleteResponse> roleDelete(ByteSequence role);
-
+  CompletableFuture<AuthRoleDeleteResponse> roleDelete(
+      ByteSequence role);
 }
