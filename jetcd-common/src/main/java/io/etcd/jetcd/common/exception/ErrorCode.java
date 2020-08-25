@@ -16,11 +16,10 @@
 
 package io.etcd.jetcd.common.exception;
 
+import io.grpc.Status;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import io.grpc.Status;
 
 /**
  * ErrorCode is a wrapper around grpc Error code.

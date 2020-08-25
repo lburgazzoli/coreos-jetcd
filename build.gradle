@@ -21,20 +21,18 @@ buildscript {
     dependencies {
         classpath "com.github.ben-manes:gradle-versions-plugin:0.29.0"
         classpath "net.researchgate:gradle-release:2.8.1"
+        classpath "com.diffplug.spotless:spotless-plugin-gradle:5.2.0"
     }
 }
 
 group = 'io.etcd'
 
 ext {
-    isSnapshot        = version.endsWith('-SNAPSHOT')
-    isRelease         = !isSnapshot
-    isCI              = Boolean.valueOf('$System.env.CI')
-    isPR              = 'false' != System.env.TRAVIS_PULL_REQUEST
-    gitRoot           = 'https://github.com/etcd-io'
-    gitProject        = 'https://github.com/etcd-io/jetcd'
-    gitURL            = 'git@github.com/etcd-io/jetcd.git'
-    ciTasks           = isRelease ? ['clean', 'test'] : (isPR ? ['clean', 'test'] : ['clean', 'test', 'uploadArchives'])
+    isSnapshot  = version.endsWith('-SNAPSHOT')
+    isRelease   = !isSnapshot
+    isCI        = Boolean.valueOf('$System.env.CI')
+    isPR        = 'false' != System.env.TRAVIS_PULL_REQUEST
+    ciTasks     = isRelease ? ['clean', 'test'] : (isPR ? ['clean', 'test'] : ['clean', 'test', 'uploadArchives'])
 }
 
 allprojects {
@@ -46,6 +44,7 @@ allprojects {
 
 subprojects {
     apply from: "${rootProject.projectDir}/gradle/versions.gradle"
+    apply from: "${rootProject.projectDir}/gradle/style.gradle"
     apply from: "${rootProject.projectDir}/gradle/release.gradle"
     apply from: "${rootProject.projectDir}/gradle/release-tasks.gradle"
 }

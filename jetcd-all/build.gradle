@@ -30,14 +30,16 @@ dependencies {
 jar.enabled = false
 
 task shadedSourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier.set('sources')
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     from {
         rootProject.subprojects.collect { it.sourceSets.main.allSource }
     }
 }
 
 task shadedJavadocJar(type: Jar, dependsOn: javadoc) {
-    classifier 'javadoc'
+    archiveClassifier.set('javadoc')
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     from {
         rootProject.subprojects.collect { it.javadoc.destinationDir }
     }
@@ -65,7 +67,7 @@ shadowJar {
 
     mergeServiceFiles()
 
-    classifier = null
+    archiveClassifier.set(null)
 }
 
 artifacts {

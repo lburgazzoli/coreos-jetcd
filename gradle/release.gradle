@@ -41,12 +41,12 @@ publishing {
             pom {
                 name = project.name
                 description = project.name
-                url = project.gitProject
+                url = "${gitProject}"
 
                 scm {
-                    url = project.gitProject
-                    connection = "scm:${project.gitProject}"
-                    developerConnection = "scm:${project.gitURL}"
+                    url = "${gitProject}"
+                    connection = "scm:${gitProject}"
+                    developerConnection = "scm:${gitURL}"
                 }
 
                 licenses {
