@@ -4,6 +4,7 @@
 !.travis.yml
 target/
 target-ide/
+build/
 *.iml
 logs/
 *.releaseBackup

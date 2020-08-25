@@ -1,0 +1,52 @@
+/*
+ * Copyright 2016-2020 The jetcd authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the 'License');
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an 'AS IS' BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.29.0"
+        classpath "net.researchgate:gradle-release:2.8.1"
+    }
+}
+
+group = 'io.etcd'
+
+ext {
+    isSnapshot        = version.endsWith('-SNAPSHOT')
+    isRelease         = !isSnapshot
+    isCI              = Boolean.valueOf('$System.env.CI')
+    isPR              = 'false' != System.env.TRAVIS_PULL_REQUEST
+    gitRoot           = 'https://github.com/etcd-io'
+    gitProject        = 'https://github.com/etcd-io/jetcd'
+    gitURL            = 'git@github.com/etcd-io/jetcd.git'
+    ciTasks           = isRelease ? ['clean', 'test'] : (isPR ? ['clean', 'test'] : ['clean', 'test', 'uploadArchives'])
+}
+
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply from: "${rootProject.projectDir}/gradle/versions.gradle"
+    apply from: "${rootProject.projectDir}/gradle/release.gradle"
+    apply from: "${rootProject.projectDir}/gradle/release-tasks.gradle"
+}
+

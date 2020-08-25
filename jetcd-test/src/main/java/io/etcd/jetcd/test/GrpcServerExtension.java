@@ -40,8 +40,8 @@ public class GrpcServerExtension implements BeforeEachCallback, AfterEachCallbac
     private boolean useDirectExecutor;
 
     /**
-     * Returns {@code this} configured to use a direct executor for the {@link ManagedChannel} and
-     * {@link Server}. This can only be called at the rule instantiation.
+     * @return {@code this} configured to use a direct executor for the {@link ManagedChannel} and
+     *         {@link Server}. This can only be called at the rule instantiation.
      */
     public final GrpcServerExtension directExecutor() {
         checkState(serverName == null, "directExecutor() can only be called at the rule instantiation");
@@ -50,29 +50,29 @@ public class GrpcServerExtension implements BeforeEachCallback, AfterEachCallbac
     }
 
     /**
-     * Returns a {@link ManagedChannel} connected to this service.
+     * @return a {@link ManagedChannel} connected to this service.
      */
     public final ManagedChannel getChannel() {
         return channel;
     }
 
     /**
-     * Returns the underlying gRPC {@link Server} for this service.
+     * @return the underlying gRPC {@link Server} for this service.
      */
     public final Server getServer() {
         return server;
     }
 
     /**
-     * Returns the randomly generated server name for this service.
+     * @return the randomly generated server name for this service.
      */
     public final String getServerName() {
         return serverName;
     }
 
     /**
-     * Returns the service registry for this service. The registry is used to add service instances
-     * (e.g. {@link BindableService} or {@link ServerServiceDefinition} to the server.
+     * @return the service registry for this service. The registry is used to add service instances
+     *         (e.g. {@link BindableService} or {@link ServerServiceDefinition} to the server.
      */
     public final MutableHandlerRegistry getServiceRegistry() {
         return serviceRegistry;

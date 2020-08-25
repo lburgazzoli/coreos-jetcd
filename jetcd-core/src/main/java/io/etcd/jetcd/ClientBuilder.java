@@ -419,7 +419,9 @@ public final class ClientBuilder implements Cloneable {
      * The interval for gRPC keepalives.
      * The current minimum allowed by gRPC is 10s
      *
-     * @param keepaliveTimeMs time in ms between keepalives
+     * @param  keepaliveTimeMs time in ms between keepalives
+     *
+     * @return                 this builder.
      */
     public ClientBuilder keepaliveTimeMs(Long keepaliveTimeMs) {
         // gRPC uses a minimum keepalive time of 10s, if smaller values are given.
@@ -435,7 +437,9 @@ public final class ClientBuilder implements Cloneable {
     /**
      * The timeout for gRPC keepalives
      *
-     * @param keepaliveTimeoutMs the gRPC keep alive timeout in milliseconds.
+     * @param  keepaliveTimeoutMs the gRPC keep alive timeout in milliseconds.
+     *
+     * @return                    this builder.
      */
     public ClientBuilder keepaliveTimeoutMs(Long keepaliveTimeoutMs) {
         this.keepaliveTimeoutMs = keepaliveTimeoutMs;
@@ -449,7 +453,9 @@ public final class ClientBuilder implements Cloneable {
     /**
      * Keepalive option for gRPC
      *
-     * @param keepaliveWithoutCalls the gRPC keep alive without calls.
+     * @param  keepaliveWithoutCalls the gRPC keep alive without calls.
+     *
+     * @return                       this builder.
      */
     public ClientBuilder keepaliveWithoutCalls(Boolean keepaliveWithoutCalls) {
         this.keepaliveWithoutCalls = keepaliveWithoutCalls;
@@ -497,9 +503,8 @@ public final class ClientBuilder implements Cloneable {
 
     /**
      * @param  connectTimeoutMs Sets the connection timeout in milliseconds.
-     * @return                  Clients connecting to fault tolerant etcd clusters (eg, clusters with >= 3 etcd server
-     *                          peers/endpoints)
-     *                          should consider a value that will allow switching timely from a crashed/partitioned peer to
+     * @return                  Clients connecting to fault tolerant etcd clusters should consider a value that will allow
+     *                          switching timely from a crashed/partitioned peer to
      *                          a consensus peer.
      */
     public ClientBuilder connectTimeoutMs(Integer connectTimeoutMs) {

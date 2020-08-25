@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package io.etcd.jetcd.launcher.maven;
+rootProject.name = "jetcd"
 
-import io.etcd.jetcd.launcher.EtcdCluster;
-
-class Singleton {
-
-    static EtcdCluster etcd;
-
-}
+//
+include ':jetcd-common'
+include ':jetcd-resolver'
+include ':jetcd-resolver-dns-srv'
+include ':jetcd-launcher'
+include ':jetcd-test'
+include ':jetcd-core'
+include ':jetcd-extensions'
+include ':jetcd-all'

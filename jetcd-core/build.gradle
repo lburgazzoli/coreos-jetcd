@@ -1,0 +1,82 @@
+/*
+ * Copyright 2016-2020 The jetcd authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+plugins {
+    id 'java'
+    id 'java-library'
+
+    id "com.google.protobuf" version "0.8.13"
+    id "com.adarshr.test-logger" version "2.1.0"
+}
+
+dependencies {
+    api project(':jetcd-common')
+    api project(':jetcd-resolver')
+
+    api "org.slf4j:slf4j-api:${slf4jVersion}"
+    api "com.google.guava:guava:${guavaVersion}"
+    api "com.github.spotbugs:spotbugs-annotations:${spotbugsAnnotationsVersion}"
+
+    api "io.grpc:grpc-core:${grpcVersion}"
+    api "io.grpc:grpc-netty:${grpcVersion}"
+    api "io.grpc:grpc-protobuf:${grpcVersion}"
+    api "io.grpc:grpc-stub:${grpcVersion}"
+    api "io.grpc:grpc-grpclb:${grpcVersion}"
+    api "net.jodah:failsafe:${failsafeVersion}"
+    api "javax.annotation:javax.annotation-api:${javaxAnnotationApiVersion}"
+
+    testImplementation project(':jetcd-launcher')
+    testImplementation project(':jetcd-test')
+
+    testImplementation "org.awaitility:awaitility:${awaitilityVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+    testImplementation "commons-io:commons-io:${commonsIoVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+
+    testRuntimeOnly "org.apache.logging.log4j:log4j-api:${log4j2Version}"
+    testRuntimeOnly "org.apache.logging.log4j:log4j-core:${log4j2Version}"
+    testRuntimeOnly "org.apache.logging.log4j:log4j-slf4j-impl:${log4j2Version}"
+    testRuntimeOnly "org.apache.logging.log4j:log4j-1.2-api:${log4j2Version}"
+}
+
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protocVersion}"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+testlogger {
+    theme 'mocha'
+    showStandardStreams true
+}
