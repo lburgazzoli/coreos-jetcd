@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
- apply plugin: "net.ltgt.errorprone"
+apply plugin: "net.ltgt.errorprone"
+apply plugin: "pmd"
 
- dependencies {
+dependencies {
     errorprone("com.google.errorprone:error_prone_core:$errorproneVersion")
 }
+
+// ********************
+//
+// Error Prone
+//
+// ********************
 
 tasks.withType(JavaCompile).configureEach {
     options.errorprone {
@@ -70,4 +77,15 @@ tasks.withType(JavaCompile).configureEach {
             "-Xep:ObjectToString:ERROR",
             "-Xep:AssertThrowsMultipleStatements:ERROR")
     }
+}
+
+// ********************
+//
+// PMD
+//
+// ********************
+
+pmd {
+    consoleOutput = true
+    ruleSets = [ rootProject.file("etc/pmd-ruleset.xml") ]
 }

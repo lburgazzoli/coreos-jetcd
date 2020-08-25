@@ -22,9 +22,7 @@ import java.util.List;
 import io.etcd.jetcd.auth.AuthRoleGetResponse;
 import io.etcd.jetcd.auth.AuthRoleListResponse;
 import io.etcd.jetcd.auth.Permission;
-import io.etcd.jetcd.auth.Permission.Type;
 import io.etcd.jetcd.test.EtcdClusterExtension;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -37,34 +35,28 @@ public class AuthClientTest {
 
     @RegisterExtension
     public static final EtcdClusterExtension cluster = new EtcdClusterExtension("auth-etcd", 1, false);
-
+    private final static String rootString = "root";
+    private final static String rootRoleString = "root";
+    private final static String userString = "user";
+    private final static String userRoleString = "userRole";
+    private static Auth authDisabledAuthClient;
+    private static KV authDisabledKVClient;
+    private static List<URI> endpoints;
     private final ByteSequence rootRoleKey = bytesOf("root");
     private final ByteSequence rootRoleValue = bytesOf("b");
     private final ByteSequence rootRoleKeyRangeBegin = bytesOf("root");
     private final ByteSequence rootRoleKeyRangeEnd = bytesOf("root1");
-
     private final ByteSequence userRoleKey = bytesOf("foo");
     private final ByteSequence userRoleValue = bytesOf("bar");
     private final ByteSequence userRoleKeyRangeBegin = bytesOf("foo");
     private final ByteSequence userRoleKeyRangeEnd = bytesOf("foo1");
-
-    private final String rootString = "root";
     private final ByteSequence root = bytesOf(rootString);
     private final ByteSequence rootPass = bytesOf("123");
-    private final String rootRoleString = "root";
     private final ByteSequence rootRole = bytesOf(rootRoleString);
-
-    private final String userString = "user";
     private final ByteSequence user = bytesOf(userString);
     private final ByteSequence userPass = bytesOf("userPass");
     private final ByteSequence userNewPass = bytesOf("newUserPass");
-    private final String userRoleString = "userRole";
     private final ByteSequence userRole = bytesOf(userRoleString);
-
-    private static Auth authDisabledAuthClient;
-    private static KV authDisabledKVClient;
-
-    private static List<URI> endpoints;
 
     /**
      * Build etcd client to create role, permission.
@@ -88,7 +80,7 @@ public class AuthClientTest {
 
         authDisabledAuthClient
             .roleGrantPermission(rootRole, rootRoleKeyRangeBegin, rootRoleKeyRangeEnd, Permission.Type.READWRITE).get();
-        authDisabledAuthClient.roleGrantPermission(userRole, userRoleKeyRangeBegin, userRoleKeyRangeEnd, Type.READWRITE).get();
+        authDisabledAuthClient.roleGrantPermission(userRole, userRoleKeyRangeBegin, userRoleKeyRangeEnd, Permission.Type.READWRITE).get();
 
         authDisabledAuthClient.userAdd(root, rootPass).get();
         authDisabledAuthClient.userAdd(user, userPass).get();

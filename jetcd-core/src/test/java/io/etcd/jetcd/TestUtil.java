@@ -69,7 +69,7 @@ public class TestUtil {
         String conditionDetails) throws InterruptedException {
         final long startTime = System.currentTimeMillis();
         boolean testConditionMet = false;
-        while (!(testConditionMet = testCondition.conditionMet()) && ((System.currentTimeMillis() - startTime) < maxWaitMs)) {
+        while (!(testConditionMet = testCondition.conditionMet()) && (System.currentTimeMillis() - startTime) < maxWaitMs) {
             Thread.sleep(Math.min(maxWaitMs, 500L));
         }
         if (!testConditionMet) {

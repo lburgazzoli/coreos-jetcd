@@ -113,7 +113,7 @@ public class KVTest {
 
     @Test
     public void testGetSortedPrefix() throws Exception {
-        String prefix = TestUtil.randomString();
+        String prefix = randomString();
         int numPrefix = 3;
         putKeysWithPrefix(prefix, numPrefix);
 
@@ -148,7 +148,7 @@ public class KVTest {
 
     @Test
     public void testGetAndDeleteWithPrefix() throws Exception {
-        String prefix = TestUtil.randomString();
+        String prefix = randomString();
         ByteSequence key = bytesOf(prefix);
         int numPrefixes = 10;
 

@@ -21,8 +21,6 @@ import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-
 public interface EtcdCluster extends AutoCloseable {
 
     void start();

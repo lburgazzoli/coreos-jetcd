@@ -153,8 +153,9 @@ public class SmartNameResolver extends NameResolver {
             }
 
             if (groups.isEmpty()) {
-                throw EtcdExceptionFactory.newEtcdException(ErrorCode.INVALID_ARGUMENT,
-                    ("Unable to resolve endpoints " + uris));
+                throw EtcdExceptionFactory.newEtcdException(
+                    ErrorCode.INVALID_ARGUMENT,
+                    "Unable to resolve endpoints " + uris);
             }
 
             savedListener.onAddresses(groups, Attributes.EMPTY);

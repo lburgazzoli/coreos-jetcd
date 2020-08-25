@@ -31,12 +31,22 @@ import io.grpc.Status;
  */
 public enum ErrorCode {
 
-    CANCELLED(Status.CANCELLED), UNKNOWN(Status.UNKNOWN), INVALID_ARGUMENT(Status.INVALID_ARGUMENT),
-    DEADLINE_EXCEEDED(Status.DEADLINE_EXCEEDED), NOT_FOUND(Status.NOT_FOUND), ALREADY_EXISTS(Status.ALREADY_EXISTS),
-    PERMISSION_DENIED(Status.PERMISSION_DENIED), UNAUTHENTICATED(Status.UNAUTHENTICATED),
-    RESOURCE_EXHAUSTED(Status.RESOURCE_EXHAUSTED), FAILED_PRECONDITION(Status.FAILED_PRECONDITION), ABORTED(Status.ABORTED),
-    OUT_OF_RANGE(Status.OUT_OF_RANGE), UNIMPLEMENTED(Status.UNIMPLEMENTED), INTERNAL(Status.INTERNAL),
-    UNAVAILABLE(Status.UNAVAILABLE), DATA_LOSS(Status.DATA_LOSS),;
+    CANCELLED(Status.CANCELLED),
+    UNKNOWN(Status.UNKNOWN),
+    INVALID_ARGUMENT(Status.INVALID_ARGUMENT),
+    DEADLINE_EXCEEDED(Status.DEADLINE_EXCEEDED),
+    NOT_FOUND(Status.NOT_FOUND),
+    ALREADY_EXISTS(Status.ALREADY_EXISTS),
+    PERMISSION_DENIED(Status.PERMISSION_DENIED),
+    UNAUTHENTICATED(Status.UNAUTHENTICATED),
+    RESOURCE_EXHAUSTED(Status.RESOURCE_EXHAUSTED),
+    FAILED_PRECONDITION(Status.FAILED_PRECONDITION),
+    ABORTED(Status.ABORTED),
+    OUT_OF_RANGE(Status.OUT_OF_RANGE),
+    UNIMPLEMENTED(Status.UNIMPLEMENTED),
+    INTERNAL(Status.INTERNAL),
+    UNAVAILABLE(Status.UNAVAILABLE),
+    DATA_LOSS(Status.DATA_LOSS),;
 
     private static final Map<Integer, ErrorCode> errorByRpcCode;
 
@@ -52,10 +62,6 @@ public enum ErrorCode {
 
     ErrorCode(Status status) {
         this.code = status.getCode();
-    }
-
-    int getCode() {
-        return this.code.value();
     }
 
     /**
@@ -76,5 +82,9 @@ public enum ErrorCode {
     static ErrorCode fromGrpcStatus(Status status) {
         ErrorCode code = errorByRpcCode.get(status.getCode().value());
         return code == null ? UNKNOWN : code;
+    }
+
+    int getCode() {
+        return this.code.value();
     }
 }

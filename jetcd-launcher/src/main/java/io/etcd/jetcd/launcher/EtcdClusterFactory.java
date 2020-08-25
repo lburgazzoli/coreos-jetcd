@@ -31,8 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.Network;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-
 import static java.util.stream.Collectors.toList;
 
 public class EtcdClusterFactory {

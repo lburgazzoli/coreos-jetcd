@@ -18,13 +18,12 @@ apply plugin: "com.diffplug.spotless"
 
 spotless {
     java {
-        //importOrder('java', 'javax', '', 'io.etcd', '', '\\#')
+        //importOrder('java', 'javax', '', '\\#java', '\\#javax', '', '\\#')
         removeUnusedImports()
         trimTrailingWhitespace()
         indentWithSpaces(4)
         endWithNewline()
 
-        importOrderFile rootProject.file('etc/eclipse.importorder')
         eclipse().configFile rootProject.file('etc/eclipse-formatter-config.xml')
     }
 }

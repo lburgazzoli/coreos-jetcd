@@ -126,7 +126,7 @@ public class KVNamespaceTest {
         {
             ByteSequence key = getNonexistentKey();
             ByteSequence nsKey = ByteSequence.from(namespace.getByteString().concat(key.getByteString()));
-            ByteSequence value = null;
+            ByteSequence value;
 
             assertNonexistentKey(kvClient, nsKey);
             assertNonexistentKey(kvClientWithNamespace, key);

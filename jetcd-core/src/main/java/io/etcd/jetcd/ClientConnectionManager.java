@@ -28,22 +28,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import net.jodah.failsafe.Failsafe;
-import net.jodah.failsafe.RetryPolicy;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.protobuf.ByteString;
-
 import io.etcd.jetcd.api.AuthGrpc;
 import io.etcd.jetcd.api.AuthenticateRequest;
 import io.etcd.jetcd.api.AuthenticateResponse;
 import io.etcd.jetcd.common.exception.ErrorCode;
-import io.etcd.jetcd.common.exception.EtcdExceptionFactory;
 import io.etcd.jetcd.resolver.URIResolverLoader;
 import io.grpc.CallOptions;
 import io.grpc.Channel;
@@ -60,7 +54,6 @@ import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;
 import io.grpc.stub.AbstractStub;
 import io.netty.channel.ChannelOption;
-
 import net.jodah.failsafe.Failsafe;
 import net.jodah.failsafe.RetryPolicy;
 
@@ -200,7 +193,7 @@ final class ClientConnectionManager {
             return stubConsumer.apply(stub).whenComplete((r, t) -> channel.shutdown());
         } catch (Exception e) {
             channel.shutdown();
-            throw EtcdExceptionFactory.toEtcdException(e);
+            throw toEtcdException(e);
         }
     }
 
@@ -313,11 +306,13 @@ final class ClientConnectionManager {
      * @return               a CompletableFuture with type T.
      */
     @SuppressWarnings("FutureReturnValueIgnored")
-    public <S, T> CompletableFuture<T> execute(Callable<ListenableFuture<S>> task,
+    public <S, T> CompletableFuture<T> execute(
+        Callable<ListenableFuture<S>> task,
         Function<S, T> resultConvert,
         Predicate<Throwable> doRetry) {
 
-        RetryPolicy<CompletableFuture<S>> retryPolicy = new RetryPolicy<CompletableFuture<S>>().handleIf(doRetry)
+        RetryPolicy<CompletableFuture<S>> retryPolicy = new RetryPolicy<CompletableFuture<S>>()
+            .handleIf(doRetry)
             .onRetriesExceeded(e -> newEtcdException(ErrorCode.ABORTED, "maximum number of auto retries reached"))
             .withBackoff(builder.retryDelay(), builder.retryMaxDelay(), builder.retryChronoUnit());
 
@@ -325,16 +320,15 @@ final class ClientConnectionManager {
             retryPolicy = retryPolicy.withMaxDuration(Duration.parse(builder.retryMaxDuration()));
         }
 
-        return Failsafe.with(retryPolicy).with(executorService)
+        return Failsafe.with(retryPolicy)
+            .with(executorService)
             .getAsyncExecution(execution -> {
                 CompletableFuture<S> wrappedFuture = new CompletableFuture<>();
                 ListenableFuture<S> future = task.call();
                 future.addListener(() -> {
                     try {
                         wrappedFuture.complete(future.get());
-                        if (execution.complete(wrappedFuture)) {
-                            // success! but nothing to do here
-                        }
+                        execution.complete(wrappedFuture);
                     } catch (Exception error) {
                         if (!execution.retryOn(error)) {
                             // permanent failure
@@ -356,14 +350,14 @@ final class ClientConnectionManager {
         @Override
         public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(MethodDescriptor<ReqT, RespT> method,
             CallOptions callOptions, Channel next) {
-            return new SimpleForwardingClientCall<ReqT, RespT>(next.newCall(method, callOptions)) {
+            return new SimpleForwardingClientCall<>(next.newCall(method, callOptions)) {
                 @Override
                 public void start(Listener<RespT> responseListener, Metadata headers) {
                     String token = getToken(next);
                     if (token != null) {
                         headers.put(TOKEN, token);
                     }
-                    super.start(new SimpleForwardingClientCallListener<RespT>(responseListener) {
+                    super.start(new SimpleForwardingClientCallListener<>(responseListener) {
                         @Override
                         public void onClose(Status status, Metadata trailers) {
                             if (isInvalidTokenError(status)) {

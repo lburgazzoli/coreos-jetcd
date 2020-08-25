@@ -195,6 +195,7 @@ public class LeaseUnitTest {
         verify(this.requestStreamObserverMock, after(1200).atLeast(2)).onNext(argThat(hasLeaseID(LEASE_ID_1)));
 
         client1.close();
+        client2.close();
     }
 
     /*

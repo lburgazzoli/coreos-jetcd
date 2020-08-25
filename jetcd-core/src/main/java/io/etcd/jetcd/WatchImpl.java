@@ -203,7 +203,7 @@ final class WatchImpl implements Watch {
                 // potentially access token expired
                 connectionManager.forceTokenRefresh();
                 Status error = Status.Code.CANCELLED.toStatus().withDescription(response.getCancelReason());
-                WatcherImpl.this.onError(toEtcdException(error));
+                onError(toEtcdException(error));
             } else if (response.getCreated()) {
 
                 //
@@ -265,7 +265,7 @@ final class WatchImpl implements Watch {
         public void onError(Throwable t) {
             // sync with close()
             synchronized (WatchImpl.this.lock) {
-                if (WatcherImpl.this.closed.get() || WatchImpl.this.closed.get()) {
+                if (this.closed.get() || WatchImpl.this.closed.get()) {
                     return;
                 }
 

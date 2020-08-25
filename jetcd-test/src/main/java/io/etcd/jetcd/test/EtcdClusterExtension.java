@@ -30,8 +30,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-
 /**
  * JUnit5 Extension to have etcd cluster in tests.
  */

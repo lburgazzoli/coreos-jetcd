@@ -101,7 +101,7 @@ public class WatchUnitTest {
         }
     }
 
-    private static void assertEqualOnKeyValues(io.etcd.jetcd.KeyValue act, io.etcd.jetcd.KeyValue exp) {
+    private static void assertEqualOnKeyValues(KeyValue act, KeyValue exp) {
         assertThat(act.getModRevision()).isEqualTo(exp.getModRevision());
         assertThat(act.getCreateRevision()).isEqualTo(exp.getCreateRevision());
         assertThat(act.getLease()).isEqualTo(exp.getLease());
@@ -168,7 +168,7 @@ public class WatchUnitTest {
             WatchResponse createdResponse = createWatchResponse(0);
             responseObserverRef.get().onNext(createdResponse);
 
-            io.etcd.jetcd.api.WatchResponse putResponse = io.etcd.jetcd.api.WatchResponse.newBuilder().setWatchId(0)
+            WatchResponse putResponse = WatchResponse.newBuilder().setWatchId(0)
                 .addEvents(Event.newBuilder().setType(EventType.PUT).build()).build();
             responseObserverRef.get().onNext(putResponse);
 
@@ -221,6 +221,8 @@ public class WatchUnitTest {
         });
 
         await().atMost(15, TimeUnit.SECONDS).untilAsserted(() -> assertThat(ref.get()).isTrue());
+
+        watcher.close();
     }
 
     @Test
@@ -237,12 +239,12 @@ public class WatchUnitTest {
             WatchResponse createdResponse = createWatchResponse(0);
             responseObserverRef.get().onNext(createdResponse);
 
-            io.etcd.jetcd.api.WatchResponse resp1 = io.etcd.jetcd.api.WatchResponse.newBuilder().setWatchId(0)
+            WatchResponse resp1 = WatchResponse.newBuilder().setWatchId(0)
                 .addEvents(Event.newBuilder().setType(EventType.PUT)
                     .setKv(io.etcd.jetcd.api.KeyValue.newBuilder().setModRevision(2).build()).build())
                 .build();
 
-            io.etcd.jetcd.api.WatchResponse resp2 = WatchResponse.newBuilder().setWatchId(0).addEvents(Event.newBuilder()
+            WatchResponse resp2 = WatchResponse.newBuilder().setWatchId(0).addEvents(Event.newBuilder()
                 .setType(EventType.PUT).setKv(io.etcd.jetcd.api.KeyValue.newBuilder().setModRevision(3).build()).build())
                 .build();
 

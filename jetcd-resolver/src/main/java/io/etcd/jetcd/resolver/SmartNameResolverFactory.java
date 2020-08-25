@@ -18,14 +18,13 @@ package io.etcd.jetcd.resolver;
 
 import java.net.URI;
 import java.util.Collection;
-
 import javax.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
-
 import io.grpc.NameResolver;
+import io.grpc.NameResolverProvider;
 
-public class SmartNameResolverFactory extends NameResolver.Factory {
+public class SmartNameResolverFactory extends NameResolverProvider {
     private final String authority;
     private final Collection<URI> uris;
     private final URIResolverLoader loader;
@@ -54,8 +53,17 @@ public class SmartNameResolverFactory extends NameResolver.Factory {
         return "etcd";
     }
 
-    public static NameResolver.Factory forEndpoints(String authority, Collection<URI> endpoints, URIResolverLoader loader) {
+    @Override
+    protected boolean isAvailable() {
+        return true;
+    }
 
+    @Override
+    protected int priority() {
+        return 5;
+    }
+
+    public static NameResolverProvider forEndpoints(String authority, Collection<URI> endpoints, URIResolverLoader loader) {
         return new SmartNameResolverFactory(authority, endpoints, loader);
     }
 }
