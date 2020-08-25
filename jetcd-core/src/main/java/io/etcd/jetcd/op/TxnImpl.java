@@ -16,17 +16,18 @@
 
 package io.etcd.jetcd.op;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableList;
-import io.etcd.jetcd.ByteSequence;
-import io.etcd.jetcd.Txn;
-import io.etcd.jetcd.api.TxnRequest;
-import io.etcd.jetcd.kv.TxnResponse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+
+import com.google.common.annotations.VisibleForTesting;
+
+import io.etcd.jetcd.ByteSequence;
+import io.etcd.jetcd.Txn;
+import io.etcd.jetcd.api.TxnRequest;
+import io.etcd.jetcd.kv.TxnResponse;
 
 /**
  * Build an etcd transaction.

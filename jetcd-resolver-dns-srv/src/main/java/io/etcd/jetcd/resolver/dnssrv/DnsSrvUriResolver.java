@@ -37,6 +37,7 @@ import io.etcd.jetcd.common.exception.ErrorCode;
 import io.etcd.jetcd.common.exception.EtcdExceptionFactory;
 import io.etcd.jetcd.resolver.URIResolver;
 
+@SuppressWarnings("JdkObsolete")
 public final class DnsSrvUriResolver implements URIResolver {
 
     private static final List<String> SCHEMES = Arrays.asList("dns+srv", "dnssrv", "srv");

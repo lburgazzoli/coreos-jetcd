@@ -34,7 +34,6 @@ import io.etcd.jetcd.api.AuthUserGetRequest;
 import io.etcd.jetcd.api.AuthUserGrantRoleRequest;
 import io.etcd.jetcd.api.AuthUserListRequest;
 import io.etcd.jetcd.api.AuthUserRevokeRoleRequest;
-import io.etcd.jetcd.api.Permission.Type;
 import io.etcd.jetcd.auth.AuthDisableResponse;
 import io.etcd.jetcd.auth.AuthEnableResponse;
 import io.etcd.jetcd.auth.AuthRoleAddResponse;

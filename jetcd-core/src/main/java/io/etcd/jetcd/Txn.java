@@ -16,12 +16,14 @@
 
 package io.etcd.jetcd;
 
+import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
+
 import com.google.common.collect.ImmutableList;
+
 import io.etcd.jetcd.kv.TxnResponse;
 import io.etcd.jetcd.op.Cmp;
 import io.etcd.jetcd.op.Op;
-import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Txn is the interface that wraps mini-transactions.
@@ -65,45 +67,45 @@ import java.util.concurrent.CompletableFuture;
  * </pre>
  */
 public interface Txn {
-  /**
-   * takes a list of comparison. If all comparisons passed in succeed,
-   * the operations passed into Then() will be executed. Or the operations
-   * passed into Else() will be executed.
-   *
-   * @param cmps the comparisons
-   * @return this object
-   */
-  Txn If(Collection<Cmp> cmps);
+    /**
+     * takes a list of comparison. If all comparisons passed in succeed,
+     * the operations passed into Then() will be executed. Or the operations
+     * passed into Else() will be executed.
+     *
+     * @param  cmps the comparisons
+     * @return      this object
+     */
+    Txn If(Collection<Cmp> cmps);
 
-  default Txn If(Cmp... cmps) {
-    return If(ImmutableList.copyOf(cmps));
-  }
+    default Txn If(Cmp... cmps) {
+        return If(ImmutableList.copyOf(cmps));
+    }
 
-  /**
-   * takes a list of operations. The Ops list will be executed, if the
-   * comparisons passed in If() succeed.
-   *
-   * @param ops the operations
-   * @return this object
-   */
-  Txn Then(Collection<Op> ops);
+    /**
+     * takes a list of operations. The Ops list will be executed, if the
+     * comparisons passed in If() succeed.
+     *
+     * @param  ops the operations
+     * @return     this object
+     */
+    Txn Then(Collection<Op> ops);
 
-  default Txn Then(Op... ops) {
-    return Then(ImmutableList.copyOf(ops));
-  }
+    default Txn Then(Op... ops) {
+        return Then(ImmutableList.copyOf(ops));
+    }
 
-  /**
-   * takes a list of operations. The Ops list will be executed, if the
-   * comparisons passed in If() fail.
-   *
-   * @param ops the operations
-   * @return this object
-   */
-  Txn Else(Collection<Op> ops);
+    /**
+     * takes a list of operations. The Ops list will be executed, if the
+     * comparisons passed in If() fail.
+     *
+     * @param  ops the operations
+     * @return     this object
+     */
+    Txn Else(Collection<Op> ops);
 
-  default Txn Else(Op... ops) {
-    return Else(ImmutableList.copyOf(ops));
-  }
+    default Txn Else(Op... ops) {
+        return Else(ImmutableList.copyOf(ops));
+    }
 
     /**
      * tries to commit the transaction.

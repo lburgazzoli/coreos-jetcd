@@ -16,6 +16,7 @@
 
 plugins {
     id 'java'
+    id 'idea'
     id 'java-library'
 
     id "com.google.protobuf" version "0.8.13"
@@ -55,7 +56,6 @@ dependencies {
     testRuntimeOnly "org.apache.logging.log4j:log4j-1.2-api:${log4j2Version}"
 }
 
-
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:${protocVersion}"
@@ -69,6 +69,13 @@ protobuf {
         all()*.plugins {
             grpc {}
         }
+    }
+}
+
+idea {
+    module {
+        sourceDirs += file("${projectDir}/build/generated/proto/main/java");
+        sourceDirs += file("${projectDir}/build/generated/proto/main/grpc");
     }
 }
 
