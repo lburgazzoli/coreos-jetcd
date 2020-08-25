@@ -32,6 +32,7 @@ import io.etcd.jetcd.maintenance.SnapshotResponse;
 import io.etcd.jetcd.maintenance.StatusResponse;
 import io.etcd.jetcd.test.EtcdClusterExtension;
 import io.grpc.stub.StreamObserver;
+
 import org.apache.commons.io.output.NullOutputStream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

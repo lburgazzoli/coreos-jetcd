@@ -32,9 +32,13 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.jodah.failsafe.Failsafe;
+import net.jodah.failsafe.RetryPolicy;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.protobuf.ByteString;
+
 import io.etcd.jetcd.api.AuthGrpc;
 import io.etcd.jetcd.api.AuthenticateRequest;
 import io.etcd.jetcd.api.AuthenticateResponse;
@@ -56,6 +60,7 @@ import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;
 import io.grpc.stub.AbstractStub;
 import io.netty.channel.ChannelOption;
+
 import net.jodah.failsafe.Failsafe;
 import net.jodah.failsafe.RetryPolicy;
 
@@ -200,7 +205,7 @@ final class ClientConnectionManager {
     }
 
     @VisibleForTesting
-    protected ManagedChannelBuilder<?> defaultChannelBuilder() {
+    ManagedChannelBuilder<?> defaultChannelBuilder() {
         final NettyChannelBuilder channelBuilder = NettyChannelBuilder.forTarget("etcd");
 
         if (builder.maxInboundMessageSize() != null) {

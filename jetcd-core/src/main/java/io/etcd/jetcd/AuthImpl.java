@@ -170,16 +170,16 @@ final class AuthImpl implements Auth {
         io.etcd.jetcd.api.Permission.Type type;
         switch (permType) {
             case WRITE:
-                type = Type.WRITE;
+                type = io.etcd.jetcd.api.Permission.Type.WRITE;
                 break;
             case READWRITE:
-                type = Type.READWRITE;
+                type = io.etcd.jetcd.api.Permission.Type.READWRITE;
                 break;
             case READ:
-                type = Type.READ;
+                type = io.etcd.jetcd.api.Permission.Type.READ;
                 break;
             default:
-                type = Type.UNRECOGNIZED;
+                type = io.etcd.jetcd.api.Permission.Type.UNRECOGNIZED;
                 break;
         }
 

@@ -34,6 +34,7 @@ import io.etcd.jetcd.election.NoLeaderException;
 import io.etcd.jetcd.election.NotLeaderException;
 import io.etcd.jetcd.options.GetOption;
 import io.etcd.jetcd.test.EtcdClusterExtension;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;

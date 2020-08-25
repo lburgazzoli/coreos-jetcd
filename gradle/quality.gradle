@@ -1,0 +1,73 @@
+/*
+ * Copyright 2016-2020 The jetcd authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the 'License');
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an 'AS IS' BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+ apply plugin: "net.ltgt.errorprone"
+
+ dependencies {
+    errorprone("com.google.errorprone:error_prone_core:$errorproneVersion")
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.errorprone {
+        excludedPaths = '.*/generated/.*'
+        disableWarningsInGeneratedCode = true
+        errorproneArgs.addAll(
+            // off
+            "-Xep:StaticOrDefaultInterfaceMethod:OFF",
+            "-Xep:FieldMissingNullable:OFF",
+            "-Xep:BooleanParameter:OFF",
+            "-Xep:MissingSummary:OFF",
+            // errors
+            "-Xep:MethodCanBeStatic:ERROR",
+            "-Xep:TestExceptionChecker:ERROR",
+            "-Xep:RedundantThrows:ERROR",
+            "-Xep:ConstantField:ERROR",
+            "-Xep:EmptySetMultibindingContributions:ERROR",
+            "-Xep:MixedArrayDimensions:ERROR",
+            "-Xep:MultipleTopLevelClasses:ERROR",
+            "-Xep:MultiVariableDeclaration:ERROR",
+            "-Xep:PackageLocation:ERROR",
+            "-Xep:PrivateConstructorForNoninstantiableModule:ERROR",
+            "-Xep:RemoveUnusedImports:ERROR",
+            "-Xep:UnnecessaryStaticImport:ERROR",
+            "-Xep:UseBinds:ERROR",
+            "-Xep:WildcardImport:ERROR",
+            "-Xep:FutureReturnValueIgnored:ERROR",
+            "-Xep:IntLongMath:ERROR",
+            "-Xep:FloatCast:ERROR",
+            "-Xep:ClassNewInstance:ERROR",
+            "-Xep:ThreeLetterTimeZoneID:ERROR",
+            "-Xep:UnsafeFinalization:ERROR",
+            "-Xep:MutableMethodReturnType:ERROR",
+            "-Xep:SynchronizeOnNonFinalField:ERROR",
+            "-Xep:WaitNotInLoop:ERROR",
+            "-Xep:SwitchDefault:ERROR",
+            "-Xep:ReachabilityFenceUsage:ERROR",
+            "-Xep:BoxedPrimitiveConstructor:ERROR",
+            "-Xep:InjectOnConstructorOfAbstractClass:ERROR",
+            "-Xep:StringSplitter:ERROR",
+            "-Xep:DefaultCharset:ERROR",
+            "-Xep:StreamResourceLeak:ERROR",
+            "-Xep:InconsistentCapitalization:ERROR",
+            "-Xep:TruthIncompatibleType:ERROR",
+            "-Xep:ByteBufferBackingArray:ERROR",
+            "-Xep:OrphanedFormatString:ERROR",
+            "-Xep:CatchAndPrintStackTrace:ERROR",
+            "-Xep:VarTypeName:ERROR",
+            "-Xep:ObjectToString:ERROR",
+            "-Xep:AssertThrowsMultipleStatements:ERROR")
+    }
+}

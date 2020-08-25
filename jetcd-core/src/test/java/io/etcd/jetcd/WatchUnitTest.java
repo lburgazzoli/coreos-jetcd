@@ -39,6 +39,7 @@ import io.etcd.jetcd.test.GrpcServerExtension;
 import io.etcd.jetcd.watch.WatchEvent;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

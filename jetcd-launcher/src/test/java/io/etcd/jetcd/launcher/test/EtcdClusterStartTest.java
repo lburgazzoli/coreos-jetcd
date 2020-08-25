@@ -18,6 +18,7 @@ package io.etcd.jetcd.launcher.test;
 
 import io.etcd.jetcd.launcher.EtcdCluster;
 import io.etcd.jetcd.launcher.EtcdClusterFactory;
+
 import org.junit.jupiter.api.Test;
 
 import static io.etcd.jetcd.launcher.EtcdClusterFactory.buildCluster;

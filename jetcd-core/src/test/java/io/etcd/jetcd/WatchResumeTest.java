@@ -23,6 +23,7 @@ import io.etcd.jetcd.Watch.Watcher;
 import io.etcd.jetcd.test.EtcdClusterExtension;
 import io.etcd.jetcd.watch.WatchEvent.EventType;
 import io.etcd.jetcd.watch.WatchResponse;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

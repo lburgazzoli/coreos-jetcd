@@ -20,13 +20,17 @@ import java.net.URI;
 import java.util.List;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+
 import io.etcd.jetcd.launcher.EtcdCluster;
 import io.etcd.jetcd.launcher.EtcdClusterFactory;
+
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import edu.umd.cs.findbugs.annotations.NonNull;
 
 /**
  * JUnit5 Extension to have etcd cluster in tests.

@@ -24,6 +24,7 @@ import io.etcd.jetcd.auth.AuthRoleListResponse;
 import io.etcd.jetcd.auth.Permission;
 import io.etcd.jetcd.auth.Permission.Type;
 import io.etcd.jetcd.test.EtcdClusterExtension;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;

@@ -19,6 +19,7 @@ package io.etcd.jetcd;
 import java.util.concurrent.CompletableFuture;
 
 import com.google.common.annotations.Beta;
+
 import io.etcd.jetcd.election.CampaignResponse;
 import io.etcd.jetcd.election.LeaderKey;
 import io.etcd.jetcd.election.LeaderResponse;

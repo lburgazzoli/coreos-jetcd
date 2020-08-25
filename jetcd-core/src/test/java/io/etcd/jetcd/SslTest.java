@@ -23,6 +23,7 @@ import java.net.URI;
 import java.util.Objects;
 
 import io.etcd.jetcd.test.EtcdClusterExtension;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 

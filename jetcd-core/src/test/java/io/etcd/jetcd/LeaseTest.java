@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.google.common.base.Charsets;
+
 import io.etcd.jetcd.lease.LeaseKeepAliveResponse;
 import io.etcd.jetcd.lease.LeaseTimeToLiveResponse;
 import io.etcd.jetcd.options.LeaseOption;
@@ -31,6 +32,7 @@ import io.etcd.jetcd.support.CloseableClient;
 import io.etcd.jetcd.support.Observers;
 import io.etcd.jetcd.test.EtcdClusterExtension;
 import io.grpc.stub.StreamObserver;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

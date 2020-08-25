@@ -50,7 +50,7 @@ public final class ByteSequence {
 
     /**
      * Concatenate the given {@code ByteSequence} to this one.
-     * 
+     *
      * @param  other string to concatenate
      * @return       a new {@code ByteSequence} instance
      */

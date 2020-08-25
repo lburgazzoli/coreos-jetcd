@@ -22,6 +22,7 @@ import java.util.Collections;
 import io.etcd.jetcd.resolver.DirectUriResolver;
 import io.etcd.jetcd.resolver.SmartNameResolver;
 import io.etcd.jetcd.resolver.URIResolverLoader;
+
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

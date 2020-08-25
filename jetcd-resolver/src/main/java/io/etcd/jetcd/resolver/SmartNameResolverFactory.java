@@ -22,6 +22,7 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
+
 import io.grpc.NameResolver;
 
 public class SmartNameResolverFactory extends NameResolver.Factory {

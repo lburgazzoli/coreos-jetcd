@@ -22,6 +22,7 @@ import java.net.ServerSocket;
 
 import com.google.common.base.Charsets;
 import com.google.protobuf.ByteString;
+
 import io.etcd.jetcd.watch.WatchResponse;
 
 import static java.nio.charset.StandardCharsets.UTF_8;

@@ -27,6 +27,7 @@ import io.etcd.jetcd.cluster.Member;
 import io.etcd.jetcd.cluster.MemberAddResponse;
 import io.etcd.jetcd.cluster.MemberListResponse;
 import io.etcd.jetcd.test.EtcdClusterExtension;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;

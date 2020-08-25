@@ -26,9 +26,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.IntStream;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.Network;
+
+import edu.umd.cs.findbugs.annotations.NonNull;
 
 import static java.util.stream.Collectors.toList;
 

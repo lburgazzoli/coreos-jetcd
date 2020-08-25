@@ -18,7 +18,6 @@ package io.etcd.jetcd;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -30,6 +29,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+
 import io.etcd.jetcd.api.LeaseGrantRequest;
 import io.etcd.jetcd.api.LeaseGrpc;
 import io.etcd.jetcd.api.LeaseKeepAliveRequest;
@@ -44,6 +44,7 @@ import io.etcd.jetcd.options.LeaseOption;
 import io.etcd.jetcd.support.CloseableClient;
 import io.etcd.jetcd.support.Observers;
 import io.grpc.stub.StreamObserver;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -186,7 +187,7 @@ final class LeaseImpl implements Lease {
         this.keepAliveFuture = scheduledExecutorService.scheduleAtFixedRate(() -> {
             // send keep alive req to the leases whose next keep alive is before now.
             this.keepAlives.entrySet().stream()
-                .filter(entry -> entry.getValue().getNextKeepAlive() < System.currentTimeMillis()).map(Entry::getKey)
+                .filter(entry -> entry.getValue().getNextKeepAlive() < System.currentTimeMillis()).map(Map.Entry::getKey)
                 .map(leaseId -> LeaseKeepAliveRequest.newBuilder().setID(leaseId).build())
                 .forEach(keepAliveRequestObserver::onNext);
 

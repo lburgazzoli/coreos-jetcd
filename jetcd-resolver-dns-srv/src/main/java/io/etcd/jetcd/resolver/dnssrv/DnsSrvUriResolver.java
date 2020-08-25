@@ -32,6 +32,7 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 
 import com.google.common.base.Splitter;
+
 import io.etcd.jetcd.common.exception.ErrorCode;
 import io.etcd.jetcd.common.exception.EtcdExceptionFactory;
 import io.etcd.jetcd.resolver.URIResolver;

@@ -20,6 +20,11 @@ spotless {
     java {
         //importOrder('java', 'javax', '', 'io.etcd', '', '\\#')
         removeUnusedImports()
-        eclipse().configFile("${rootProject.projectDir}/etc/eclipse-formatter-config.xml")
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+
+        importOrderFile rootProject.file('etc/eclipse.importorder')
+        eclipse().configFile rootProject.file('etc/eclipse-formatter-config.xml')
     }
 }

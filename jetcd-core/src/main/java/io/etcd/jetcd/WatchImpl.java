@@ -27,6 +27,7 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListeningScheduledExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+
 import io.etcd.jetcd.api.WatchCancelRequest;
 import io.etcd.jetcd.api.WatchCreateRequest;
 import io.etcd.jetcd.api.WatchGrpc;
@@ -36,6 +37,7 @@ import io.etcd.jetcd.common.exception.ErrorCode;
 import io.etcd.jetcd.options.WatchOption;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
