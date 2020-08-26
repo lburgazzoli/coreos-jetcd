@@ -80,7 +80,8 @@ public class AuthClientTest {
 
         authDisabledAuthClient
             .roleGrantPermission(rootRole, rootRoleKeyRangeBegin, rootRoleKeyRangeEnd, Permission.Type.READWRITE).get();
-        authDisabledAuthClient.roleGrantPermission(userRole, userRoleKeyRangeBegin, userRoleKeyRangeEnd, Permission.Type.READWRITE).get();
+        authDisabledAuthClient
+            .roleGrantPermission(userRole, userRoleKeyRangeBegin, userRoleKeyRangeEnd, Permission.Type.READWRITE).get();
 
         authDisabledAuthClient.userAdd(root, rootPass).get();
         authDisabledAuthClient.userAdd(user, userPass).get();
