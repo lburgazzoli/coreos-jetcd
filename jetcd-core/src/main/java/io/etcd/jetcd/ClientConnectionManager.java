@@ -350,14 +350,14 @@ final class ClientConnectionManager {
         @Override
         public <ReqT, RespT> ClientCall<ReqT, RespT> interceptCall(MethodDescriptor<ReqT, RespT> method,
             CallOptions callOptions, Channel next) {
-            return new SimpleForwardingClientCall<>(next.newCall(method, callOptions)) {
+            return new SimpleForwardingClientCall<ReqT, RespT>(next.newCall(method, callOptions)) {
                 @Override
                 public void start(Listener<RespT> responseListener, Metadata headers) {
                     String token = getToken(next);
                     if (token != null) {
                         headers.put(TOKEN, token);
                     }
-                    super.start(new SimpleForwardingClientCallListener<>(responseListener) {
+                    super.start(new SimpleForwardingClientCallListener<RespT>(responseListener) {
                         @Override
                         public void onClose(Status status, Metadata trailers) {
                             if (isInvalidTokenError(status)) {
